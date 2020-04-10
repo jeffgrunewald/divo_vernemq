@@ -5,19 +5,17 @@ on:
       - master
     paths:
       - "image/**"
-
 jobs:
   publish:
     name: Push image to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Get release version
         id: get_version
         run: echo ::set-env name=RELEASE_VERSION::$(cat image/version.txt)
       - name: Push
-        uses: elgohr/Publish-Docker-Github-Actions@2.14
+        uses: elgohr/Publish-Docker-Github-Action@2.14
         with:
           workdir: image
           name: jeffgrunewald/vernemq
