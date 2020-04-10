@@ -18,6 +18,7 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@2.14
         with:
           workdir: image
+          buildargs: ${{ env.RELEASE_VERSION }}
           name: jeffgrunewald/vernemq
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}

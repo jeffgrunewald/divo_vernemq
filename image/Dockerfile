@@ -11,7 +11,7 @@ RUN apk --no-cache --update --available upgrade \
  && adduser --uid 10000 -H -D -G vernemq -h /vernemq vernemq \
  && install -d -o vernemq -g vernemq /vernemq
 
-ENV VERNEMQ_VERSION="1.10.2"
+ARG VERNEMQ_VERSION
 
 WORKDIR /vernemq
 
