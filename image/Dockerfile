@@ -43,9 +43,7 @@ ENV DOCKER_VERNEMQ_KUBERNETES_LABEL_SELECTOR="app=vernemq" \
 
 WORKDIR /vernemq
 
-RUN mkdir ./etc \
- && mkdir ./data \
- && mkdir ./log
+RUN bash -c 'mkdir ./{data,etc,log}'
 
 COPY --from=builder /vernemq/_build/default/rel/vernemq ./
 COPY --chown=10000:10000 assets/run_vernemq.sh /usr/local/bin/run_vernemq
