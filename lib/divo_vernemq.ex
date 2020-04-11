@@ -20,10 +20,15 @@ defmodule DivoVernemq do
                  port VerneMQ uses for MQTT is 1883. The only affects the port exposed to the host;
                  within the container the VerneMQ broker is listening on port 1883.
 
-  * `ws_mqtt_port`: The port on which the MQTT Websocket listener will be exposed to the host.
-                    The default port VerneMQ uses for MQTT over websockets is 8883. This only
+  * `ssl_mqtt_port`: The port on which the MQTT over SSL communication will be exposed to the host.
+                     The default port VerneMQ uses for MQTT over SSL is 8883. This only affects the
+                     port exposed to the host; within the container, the VerneMQ broker is listening
+                     on port 8883.
+
+  * `ws_mqtt_port`: The port on which the MQTT over Websocket communication will be exposed to the host.
+                    The default port VerneMQ uses for MQTT over websockets is 8080. This only
                     affects the port exposed to the host; within the container the VerneMQ broker
-                    is listening on port 8883.
+                    is listening on port 8080.
 
   * `stats_port`: The port on which the statistics web service, including the status UI, is exposed
                   to the host. The default port VerneMQ uses for the stats interface is 8888. This
@@ -36,7 +41,6 @@ defmodule DivoVernemq do
             are transparently converted to environment variables that are injected into the container
             in the form of `DOCKER_VERNEMQ_USER_<username>='password'`. Defaults to an empty map.
   * `version`: The version of the VerneMQ image to run. Defaults to `latest`.
-
   """
   @impl Divo.Stack
   @spec gen_stack([tuple()]) :: map()
@@ -44,7 +48,8 @@ defmodule DivoVernemq do
     version = Keyword.get(envars, :version, "latest")
     allow_anonymous = Keyword.get(envars, :allow_anonymous, :on) |> validate_allow_anon()
     mqtt_port = Keyword.get(envars, :mqtt_port, 1883)
-    ws_mqtt_port = Keyword.get(envars, :ws_mqtt_port, 8883)
+    ssl_mqtt_port = Keyword.get(envars, :ssl_mqtt_port, 8883)
+    ws_mqtt_port = Keyword.get(envars, :ws_mqtt_port, 8080)
     stats_port = Keyword.get(envars, :stats_port, 8888)
     log_level = Keyword.get(envars, :log_level, :info) |> validate_log_level()
     users = Keyword.get(envars, :users, %{})
@@ -54,7 +59,8 @@ defmodule DivoVernemq do
         image: "jeffgrunewald/vernemq:#{version}",
         ports: [
           "#{mqtt_port}:1883",
-          "#{ws_mqtt_port}:8883",
+          "#{ssl_mqtt_port}:8883",
+          "#{ws_mqtt_port}:8080",
           "#{stats_port}:8888"
         ],
         environment:

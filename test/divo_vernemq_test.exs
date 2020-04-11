@@ -6,7 +6,7 @@ defmodule DivoVernemqTest do
       expected = %{
         vernemq: %{
           image: "jeffgrunewald/vernemq:latest",
-          ports: ["1883:1883", "8883:8883", "8888:8888"],
+          ports: ["1883:1883", "8883:8883", "8080:8080", "8888:8888"],
           environment: [
             "DOCKER_VERNEMQ_ALLOW_ANONYMOUS=on",
             "DOCKER_VERNEMQ_LOG__CONSOLE__LEVEL=info"
@@ -23,7 +23,7 @@ defmodule DivoVernemqTest do
       expected = %{
         vernemq: %{
           image: "jeffgrunewald/vernemq:v2.1",
-          ports: ["1111:1883", "2222:8883", "8888:8888"],
+          ports: ["1111:1883", "2222:8883", "8080:8080", "8888:8888"],
           environment: [
             "DOCKER_VERNEMQ_ALLOW_ANONYMOUS=off",
             "DOCKER_VERNEMQ_LOG__CONSOLE__LEVEL=info",
@@ -38,7 +38,7 @@ defmodule DivoVernemqTest do
           allow_anonymous: :off,
           users: %{foo: "bar"},
           mqtt_port: 1111,
-          ws_mqtt_port: 2222
+          ssl_mqtt_port: 2222
         )
 
       assert actual == expected
